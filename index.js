@@ -5,12 +5,13 @@ import { MongoClient, ServerApiVersion } from "mongodb";
 const app = express();
 const port = 3000;
 
+app.use(express.json());
 dotenv.config();
 
 const uri = process.env.DB_URI;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 
-app.get('/', (_, res) => {
+app.get('/posts', (_, res) => {
     client.connect().then(db => {
         console.log("successfully connected");
         if (!db) return false;
@@ -27,9 +28,9 @@ app.get('/', (_, res) => {
 app.post('/insert', (req, res) => {
     client.connect().then(db => {
         if (!db) return false;
-        db.db("blog").collection("posts").insertOne({}).then(result => {
+        db.db("blog").collection("posts").insertOne(req.body).then(result => {
             res.status(200).send(result);
-        })
+        });
     }).catch(err => {
         console.error(err);
         res.status(500).send("Error creating posts");
