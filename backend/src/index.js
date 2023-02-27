@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 import { MongoClient, ServerApiVersion } from "mongodb";
 
 const app = express();
-const port = 3000;
+const port = 4000;
 
 app.use(express.json());
 dotenv.config();
